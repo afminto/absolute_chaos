@@ -1,0 +1,11 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+def iterate(prev, r):
+    return r * prev * (1 - prev)
+
+def find_results_r(n):
+    arr = np.array((n, 10000), float)
+    print(arr)
+
+find_results_r(10)
