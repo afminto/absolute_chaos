@@ -4,6 +4,7 @@ import os
 from PIL import Image
 import glob
 import math
+import random
 
 #This function takes in the previous value of the logistic map, and the growth rate,
 # and performs one iteration. It returns the next value of the logistic map
@@ -14,7 +15,8 @@ def iterate(prev, r):
 # from zero to 4. It performs this for 10,000 values of the growth rate in between 0 and 4.
 def find_mapping_r(n):
     arr = np.zeros(shape=(10000, n))
-    arr[:,0] = 0.5
+    for i in range(10000):
+        arr[i,0] = random.random()
     ratios = np.linspace(0, 4, 10000)
     for i in range(1, n):
         arr[:,i] = iterate(arr[:,i-1], ratios)
@@ -28,7 +30,10 @@ def find_mapping_r(n):
 #a representation of the number as a string with digits number of characters, i. e. left_pad(1,3) -> '001',
 #left_pad(101, 3) -> '101'
 def left_pad(num, digits):
-    logarithm = math.log10(num)
+    if num == 0:
+        logarithm = 0
+    else:
+        logarithm = math.log10(num)
     floor = math.floor(logarithm)
     necessary = digits - floor - 1
     string_num = str(num)
@@ -41,10 +46,11 @@ def left_pad(num, digits):
 #graph in the folder logistic_gif.
 def single_graph(ratios, values, start_val, n_values):
     for i in range(n_values):
-        plt.scatter(ratios, values[:,i], 0.0005, marker='.', color='blue')
+        plt.scatter(ratios, values[:,i], 0.0005, marker='o', color='blue')
     plt.title(f'Logistic Map Iterates {start_val} to {start_val + n_values - 1}')
     plt.xlabel('Growth Factor r')
     plt.ylabel('nth Iterate value x\N{LATIN SUBSCRIPT SMALL LETTER N}')
+    plt.ylim((-0.1, 1.1))
     plt.figure('')
     plt.savefig(f'logistic_gif/figure_{left_pad(start_val, 3)}.png', dpi = 1000)
     plt.close()
@@ -76,4 +82,4 @@ def create_gif(n, interval):
 
 #A good number of iterations for the gif is 200, with 10 iterations per frame.     
 
-create_gif(200, 10)
+create_gif(50, 1)
